@@ -1,0 +1,41 @@
+
+CREATE DATABASE `EvidencijaMagacina1`;
+
+
+/*USE `EvidencijaMagacina1`;*/
+
+CREATE TABLE `vrsta`(
+	`id_vrste` integer NOT NULL PRIMARY KEY,	
+	`nazivVrste` varchar(50) NOT NULL
+);
+
+CREATE TABLE `roba`(
+    `godina_kupovine` date NOT NULL,
+    `nazivDobavljaca` varchar(50) NOT NULL,
+	`id_robe` integer NOT NULL primary key,
+	`nazivRobe` varchar(50) NOT NULL,
+	`cena` varchar(10) NULL,
+	`opis` varchar(30) NOT NULL,
+	`id_dobavljaca` integer not null);
+    ALTER TABLE `roba`
+ADD CONSTRAINT FKinst FOREIGN KEY(`id_vrste`) 
+REFERENCES `vrsta`(`id_vrste`) 
+ON DELETE NO ACTION ON UPDATE CASCADE;
+
+
+
+INSERT INTO `vrsta`
+VALUES (3, 'PORCELAN');
+
+
+INSERT INTO `roba`
+VALUES ('2002-02-01', 'mesec', 3, 'dadad', '200','dadad',3 );
+
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `prikazi`(OUT `roba` int, OUT `vrsta` int)
+    NO SQL
+select nazivrobe,nazivVrste,godina_kupovine,nazivdobavljaca,cena,opis from roba t1 INNER JOIN vrsta t2 on t1.id_robe=t2.id_vrste$$
+DELIMITER ;
+
+
